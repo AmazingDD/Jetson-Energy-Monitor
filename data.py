@@ -65,7 +65,7 @@ def load_data(name='cifar10'):
 
         C, H, W, num_classes = 3, 32, 32, 10
 
-    if name == 'imagenet':
+    elif name == 'imagenet':
         transform_train = transforms.Compose([
             transforms.Resize(64, interpolation=transforms.InterpolationMode.BICUBIC),
             transforms.ToTensor(),
@@ -87,4 +87,3 @@ def load_data(name='cifar10'):
     
     
     return train_set, test_set, C, H, W, num_classes
-

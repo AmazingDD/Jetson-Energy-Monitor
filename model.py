@@ -93,7 +93,7 @@ class VGG9(nn.Module):
         out = 0.
         for _ in range(self.T):
             _out = self.features(x)
-            _out = self.classifier(out)
+            _out = self.classifier(_out)
             out += _out
 
         out /= self.T

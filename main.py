@@ -1,4 +1,5 @@
 import os
+import time
 import argparse
 from tqdm import tqdm
 
@@ -8,7 +9,7 @@ from torch.utils.data import DataLoader
 
 from model import *
 from data import load_data
-from power_check import *
+import power_check as pc
 
 model_conf = {
     'vgg': VGG9,
@@ -19,7 +20,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='energy checker with jetson series edge devices')
     parser.add_argument('-T', type=int, default=4, help='time step (default: 4)')
     parser.add_argument('-b', '--batch_size', type=int, default=64, help='batch size')
-    parser.add_argument('-epochs', type=int, default=70, help='training epochs')
+    parser.add_argument('-epochs', type=int, default=10, help='training epochs')
     parser.add_argument('-model', type=str, default='vgg9', help='neural network used in training')
     parser.add_argument('-dataset', type=str, default='cifar10', help='dataset name for measure')
     args = parser.parse_args()
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     train_set, test_set, C, H, W, num_classes = load_data(args.dataset)
 
     # training can be implemented on server GPU 
-    train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True)å
+    train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True)
     model = model_conf[args.model](num_classes, C, H, W, T=args.T)
     model.to(device)
     optimzer = torch.optim.Adam(model.parameters(), lr=1e-3)
